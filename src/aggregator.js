@@ -1,6 +1,7 @@
 "use strict";
 
 const debug = require('debug')('loopback:component:aggregate');
+const Promise = require('bluebird');
 const Builder = require('./builder');
 const utils = require('./utils');
 
