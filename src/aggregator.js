@@ -61,7 +61,7 @@ aggregator.exec = function (aggregation, filter) {
 
   return Promise.fromCallback((callback) => cursor.toArray((err, data) => {
     debug('aggregate', aggregation.Model.modelName, filter, err, data);
-    callback(err, data.map(rewriteId));
+    callback(err, data && data.map(rewriteId));
   }));
 };
 
