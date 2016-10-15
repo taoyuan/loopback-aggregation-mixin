@@ -1,7 +1,7 @@
 {
-  "name": "loopback-component-aggregation",
+  "name": "loopback-aggregation-mixin",
   "version": "1.0.0",
-  "description": "loopback aggregation component (for mongodb only now)",
+  "description": "Loopback aggregation mixin (for mongodb only now)",
   "homepage": "",
   "author": {
     "name": "Yuan Tao",
@@ -52,7 +52,7 @@
       "mocha": true
     }
   },
-  "repository": "taoyuan/loopback-component-aggregation",
+  "repository": "taoyuan/loopback-aggregation-mixin",
   "scripts": {
     "prepublish": "gulp prepublish",
     "test": "gulp"

@@ -3,9 +3,9 @@
 require('./init');
 const assert = require('chai').assert;
 const s = require('./support');
-const Aggregation = require('../src/aggregation');
+const Builder = require('../src/builder');
 
-describe('aggregation', function () {
+describe('builder', function () {
 
   beforeEach(function () {
     return s.setup().then((db) => {
@@ -15,7 +15,7 @@ describe('aggregation', function () {
 
   it('should build match for loopback `where` syntax', function () {
     const db = this.db;
-    const aggregation = new Aggregation(db.models['Sales'], {
+    const aggregation = new Builder(db.models['Sales'], {
       match: {
         or: [
           {and: [{field1: 'foo'}, {field2: {gt: 2}}]},
@@ -49,7 +49,7 @@ describe('aggregation', function () {
 
   it('should hold original mongo query statement', function () {
     const db = this.db;
-    const aggregation = new Aggregation(db.models['Sales'], {
+    const aggregation = new Builder(db.models['Sales'], {
       match: {
         $or: [
           {$and: [{field3: 'foo'}, {field4: {$gt: 2}}]},

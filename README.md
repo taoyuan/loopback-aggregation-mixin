@@ -1,16 +1,16 @@
-# loopback-component-aggregation [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
+# loopback-aggregation-mixin [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
 > loopback aggregation component (for mongodb only now)
 
 ## Installation
 
 ```sh
-$ npm install --save loopback-component-aggregation
+$ npm install --save loopback-aggregation-mixin
 ```
 
 ## Usage
 
 ```js
-var loopbackComponentAggregation = require('loopback-component-aggregation');
+var loopbackComponentAggregation = require('loopback-aggregation-mixin');
 
 loopbackComponentAggregation('Rainbow');
 ```
@@ -19,11 +19,11 @@ loopbackComponentAggregation('Rainbow');
 MIT © [Yuan Tao]()
 
 
-[npm-image]: https://badge.fury.io/js/loopback-component-aggregation.svg
-[npm-url]: https://npmjs.org/package/loopback-component-aggregation
-[travis-image]: https://travis-ci.org/taoyuan/loopback-component-aggregation.svg?branch=master
-[travis-url]: https://travis-ci.org/taoyuan/loopback-component-aggregation
-[daviddm-image]: https://david-dm.org/taoyuan/loopback-component-aggregation.svg?theme=shields.io
-[daviddm-url]: https://david-dm.org/taoyuan/loopback-component-aggregation
-[coveralls-image]: https://coveralls.io/repos/taoyuan/loopback-component-aggregation/badge.svg
-[coveralls-url]: https://coveralls.io/r/taoyuan/loopback-component-aggregation
+[npm-image]: https://badge.fury.io/js/loopback-aggregation-mixin.svg
+[npm-url]: https://npmjs.org/package/loopback-aggregation-mixin
+[travis-image]: https://travis-ci.org/taoyuan/loopback-aggregation-mixin.svg?branch=master
+[travis-url]: https://travis-ci.org/taoyuan/loopback-aggregation-mixin
+[daviddm-image]: https://david-dm.org/taoyuan/loopback-aggregation-mixin.svg?theme=shields.io
+[daviddm-url]: https://david-dm.org/taoyuan/loopback-aggregation-mixin
+[coveralls-image]: https://coveralls.io/repos/taoyuan/loopback-aggregation-mixin/badge.svg
+[coveralls-url]: https://coveralls.io/r/taoyuan/loopback-aggregation-mixin

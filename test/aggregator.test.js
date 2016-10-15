@@ -16,7 +16,7 @@ describe('aggregator', function () {
   describe('#build', function () {
     it('should build typical aggregate filters', function () {
       const Model = this.db.models['Sales'];
-      const aggregation = aggregator.build(Model, {
+      const builder = aggregator.build(Model, {
         "where": {
           "name": "bob"
         },
@@ -39,7 +39,7 @@ describe('aggregator', function () {
         }
       });
 
-      assert.deepEqual(aggregation.pipeline, [
+      assert.deepEqual(builder.pipeline, [
         {
           "$match": {"name": "bob"}
         }, {

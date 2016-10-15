@@ -1,7 +1,7 @@
 "use strict";
 
 const debug = require('debug')('loopback:component:aggregate');
-const Aggregation = require('./aggregation');
+const Builder = require('./builder');
 const utils = require('./utils');
 
 const aggregator = {};
@@ -24,23 +24,23 @@ aggregator.build = function (Model, filter, options) {
     throw new Error('no aggregate filter');
   }
 
-  const aggregation = new Aggregation(Model, filter.aggregate);
+  const builder = new Builder(Model, filter.aggregate);
 
   if (filter.where) {
-    aggregation.matchAt(0, filter.where);
+    builder.matchAt(0, filter.where);
     // aggregation.pipeline.unshift({'$match': connector.buildWhere(Model.modelName, filter.where)});
   }
 
-  debug('all.aggregate', aggregation.pipeline);
+  debug('all.aggregate', builder.pipeline);
   if (filter.fields) {
-    aggregation.project(filter.fields);
+    builder.project(filter.fields);
   }
 
   if (filter.sort) {
-    aggregation.sort(connector.buildSort(Model.modelName, filter.sort));
+    builder.sort(connector.buildSort(Model.modelName, filter.sort));
   }
 
-  return aggregation;
+  return builder;
 };
 
 aggregator.exec = function (aggregation) {

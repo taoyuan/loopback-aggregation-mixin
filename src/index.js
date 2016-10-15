@@ -1,7 +1,7 @@
 'use strict';
 
-const mixin = require('./mixin');
+const aggregation = require('./aggregation');
 
 module.exports = function (app) {
-  app.loopback.modelBuilder.mixins.define('Aggregate', mixin);
+  app.loopback.modelBuilder.mixins.define('Aggregation', aggregation);
 };
