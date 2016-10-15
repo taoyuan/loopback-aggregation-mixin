@@ -43,7 +43,9 @@ aggregator.build = function (Model, filter, options) {
   return builder;
 };
 
-aggregator.exec = function (aggregation) {
+aggregator.exec = function (aggregation, filter) {
+  filter = filter || {};
+
   const cursor = aggregation.aggregate();
 
   if (filter.limit) {
@@ -68,7 +70,7 @@ aggregator.aggregate = function(Model, filter, options, callback) {
   let aggregation;
   try {
     aggregation = aggregator.build(Model, filter, options);
-    aggregator.exec(aggregation).asCallback(callback);
+    aggregator.exec(aggregation, filter).asCallback(callback);
   } catch (e) {
     callback(e);
   }
