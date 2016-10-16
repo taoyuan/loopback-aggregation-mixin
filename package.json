@@ -1,6 +1,6 @@
 {
   "name": "loopback-aggregation-mixin",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Loopback aggregation mixin (for mongodb only now)",
   "homepage": "",
   "author": {
