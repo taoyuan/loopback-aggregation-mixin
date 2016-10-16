@@ -9,11 +9,11 @@ $ npm install --save loopback-aggregation-mixin
 
 ## Usage
 
-```js
-var loopbackComponentAggregation = require('loopback-aggregation-mixin');
+__Coming Soon__
 
-loopbackComponentAggregation('Rainbow');
-```
+## Creds
+* [loopback-mongo-aggregate-mixin](https://github.com/BoLaMN/loopback-mongo-aggregate-mixin) from [BoLaMN](https://github.com/BoLaMN)   
+
 ## License
 
 MIT © [Yuan Tao]()
