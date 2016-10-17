@@ -2,25 +2,22 @@
 
 const _ = require('lodash');
 const utils = require('./utils');
+const dao = require('./dao');
 
-class Builder {
+class Context {
 
-  constructor(Model, ...args) {
+  constructor(connector, model) {
     this.pipeline = [];
     this.options = {};
 
-    if (typeof Model !== 'function') {
-      args.unshift(Model);
-      Model = null;
+    if (typeof connector === 'function') { // Model class
+      model = connector.modelName;
+      connector = connector.getConnector();
     }
 
-    this.Model = Model;
-    if (Model) {
-      this.connector = Model.getConnector();
-      this.collection = this.connector.collection(Model.modelName);
-    }
-
-    this.add(...args);
+    this.connector = connector;
+    this.model = model;
+    this.collection = connector && model && connector.collection(model);
   }
 
   build(directive) {
@@ -30,6 +27,12 @@ class Builder {
 
     return _.transform(directive, (result, value, key) => {
       if (key[0] !== '$') key = '$' + key;
+      if (key === '$match') {
+        value = dao.coerce(value);
+        if (this.connector && this.model) {
+          value = this.connector.buildWhere(this.model, value);
+        }
+      }
       result[key] = this.buildQuery(value);
     }, {});
   };
@@ -40,23 +43,9 @@ class Builder {
     }
 
     return _.transform(where, (result, v, k) => {
-      if ((k === 'and' || k === 'or' || k === 'nor') && Array.isArray(v)) {
-        k = '$' + k;
-        v = v.map(item => this.buildWhere(item));
-      }
-      if (k === 'id') {
-        k = '_id';
-      }
+      k = k === 'id' ? '_id' : k;
       result[k] = v;
     }, {});
-  };
-
-  buildWhere(where) {
-    if (this.Model) {
-      return this.Model.getConnector().buildWhere(this.Model.modelName, where);
-    }
-
-    return where;
   };
 
   add(pos, ...args) {
@@ -72,16 +61,16 @@ class Builder {
     return this;
   };
 
-  match(options) {
-    return this.matchAt(null, options);
+  match(where) {
+    return this.matchAt(null, where);
   };
 
-  matchAt(pos, options) {
-    return this.add(pos, {$match: options});
+  matchAt(pos, where) {
+    return this.add(pos, {$match: where});
   };
 
   group(options) {
-    return this.groupAt(null, {$group: options});
+    return this.groupAt(null, options);
   };
 
   groupAt(pos, options) {
@@ -150,13 +139,23 @@ class Builder {
   aggregate(collection) {
     collection = collection || this.collection;
     if (!collection) {
-      throw new Error('Aggregation not bound to any Model');
+      throw new Error('Aggregation not bound to any model');
     }
 
     return collection.aggregate(this.pipeline, this.options);
   };
 
   explain(collection, callback) {
+    if (typeof collection === 'string') {
+      callback = collection;
+      collection = null;
+    }
+
+    collection = collection || this.collection;
+    if (!collection) {
+      throw new Error('Aggregation not bound to any model');
+    }
+
     callback = callback || utils.createPromiseCallback();
 
     if (this.pipeline.length) {
@@ -169,4 +168,4 @@ class Builder {
   };
 }
 
-module.exports = Builder;
+module.exports = Context;

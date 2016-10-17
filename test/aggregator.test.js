@@ -18,7 +18,9 @@ describe('aggregator', function () {
       const Model = this.db.models['Sales'];
       const builder = aggregator.build(Model, {
         "where": {
-          "name": "bob"
+          "name": "bob",
+          "date1": {"lt": "/Date(1221644506800-0700)/"},
+          "date3": {"lt": "2013-02-04T18:35:24+00:00"},
         },
         "aggregate": {
           "group": {
@@ -41,7 +43,15 @@ describe('aggregator', function () {
 
       assert.deepEqual(builder.pipeline, [
         {
-          "$match": {"name": "bob"}
+          "$match": {
+            "name": "bob",
+            "date1": {
+              "$lt": new Date('2008-09-17T09:41:46.800Z')
+            },
+            "date3": {
+              "$lt": new Date('2013-02-04T18:35:24.000Z')
+            }
+          }
         }, {
           "$group": {"_id": "$name", "count": {"$sum": 1}, "external": {"$sum": 1}}
         }, {

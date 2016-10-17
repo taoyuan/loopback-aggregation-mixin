@@ -2,8 +2,9 @@
 
 const debug = require('debug')('loopback:component:aggregate');
 const Promise = require('bluebird');
-const Builder = require('./builder');
+const Context = require('./context');
 const utils = require('./utils');
+const dao = require('./dao');
 
 const aggregator = {};
 
@@ -18,36 +19,36 @@ function rewriteId(doc) {
 
 aggregator.build = function (Model, filter, options) {
   const connector = Model.getConnector();
+  const model = Model.modelName;
 
-  debug('aggregate', Model.modelName);
+  debug('aggregate', model);
 
   if (!filter || !filter.aggregate) {
     throw new Error('no aggregate filter');
   }
 
-  const builder = new Builder(Model, filter.aggregate);
+  const context = (new Context(connector, model)).add(filter.aggregate);
 
   if (filter.where) {
-    builder.matchAt(0, filter.where);
-    // aggregation.pipeline.unshift({'$match': connector.buildWhere(Model.modelName, filter.where)});
+    context.matchAt(0, filter.where);
   }
 
-  debug('all.aggregate', builder.pipeline);
+  debug('all.aggregate', context.pipeline);
   if (filter.fields) {
-    builder.project(filter.fields);
+    context.project(filter.fields);
   }
 
   if (filter.sort) {
-    builder.sort(connector.buildSort(Model.modelName, filter.sort));
+    context.sort(connector.buildSort(model, filter.sort));
   }
 
-  return builder;
+  return context;
 };
 
-aggregator.exec = function (aggregation, filter) {
+aggregator.exec = function (context, filter) {
   filter = filter || {};
 
-  const cursor = aggregation.aggregate();
+  const cursor = context.aggregate();
 
   if (filter.limit) {
     cursor.limit(filter.limit);
@@ -60,7 +61,7 @@ aggregator.exec = function (aggregation, filter) {
   }
 
   return Promise.fromCallback((callback) => cursor.toArray((err, data) => {
-    debug('aggregate', aggregation.Model.modelName, filter, err, data);
+    debug('aggregate', context.model, filter, err, data);
     callback(err, data && data.map(rewriteId));
   }));
 };
@@ -68,10 +69,9 @@ aggregator.exec = function (aggregation, filter) {
 aggregator.aggregate = function(Model, filter, options, callback) {
   callback = callback || utils.createPromiseCallback();
 
-  let aggregation;
   try {
-    aggregation = aggregator.build(Model, filter, options);
-    aggregator.exec(aggregation, filter).asCallback(callback);
+    const context = aggregator.build(Model, filter, options);
+    aggregator.exec(context, filter).asCallback(callback);
   } catch (e) {
     callback(e);
   }
