@@ -1,4 +1,7 @@
 # loopback-aggregation-mixin [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/taoyuan/loopback-aggregation-mixin.svg)](https://greenkeeper.io/)
+
 > loopback aggregation component (for mongodb only now)
 
 __DEPRECATED. Use [loopback-mongo-aggregate-mixin](https://github.com/BoLaMN/loopback-mongo-aggregate-mixin) instead__
